@@ -1,0 +1,4 @@
+update.sh
+update_page.py
+*.pyc
+__pycache__
