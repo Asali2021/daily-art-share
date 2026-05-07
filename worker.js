@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    if (url.pathname === '/' || url.pathname === '/index.html') {
+      return new Response(`<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -323,31 +327,28 @@
     <script>
         // 音乐数据
         const musicFiles = [
-        { file: 'music/song_145242_2.mp3', title: 'song 145242 2' },
-        { file: 'music/song_145240_2.mp3', title: 'song 145240 2' },
-        { file: 'music/song_145059_1.mp3', title: 'song 145059 1' },
-        { file: 'music/song_152425_2.mp3', title: 'song 152425 2' },
-        { file: 'music/song_152242_1.mp3', title: 'song 152242 1' },
-        { file: 'music/song_145310_2.mp3', title: 'song 145310 2' },
-        { file: 'music/song_145100_1.mp3', title: 'song 145100 1' },
-        { file: 'music/song_144901_1.mp3', title: 'song 144901 1' },
-        { file: 'music/music_2026-05-06-06-50-53.mp3', title: 'music 2026 05 06 06 50 53' },
-        { file: 'music/music_2026-04-27-06-34-30.mp3', title: 'music 2026 04 27 06 34 30' },
-        { file: 'music/music_2026-04-27-06-14-33.mp3', title: 'music 2026 04 27 06 14 33' },
-        { file: 'music/song_2026-05-05_004.mp3', title: 'song 2026 05 05 004' },
-        { file: 'music/song_2026-05-05_003.mp3', title: 'song 2026 05 05 003' },
-        { file: 'music/song_2026-05-05_002.mp3', title: 'song 2026 05 05 002' },
-        { file: 'music/song_2026-05-05_001.mp3', title: 'song 2026 05 05 001' },
-        { file: 'music/song_2026-04-27_002.mp3', title: 'song 2026 04 27 002' },
-        { file: 'music/song_2026-04-27_001.mp3', title: 'song 2026 04 27 001' }
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/music_2026-05-06-06-50-53.mp3', title: 'music 2026 05 06 06 50 53' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/song_145100_1.mp3', title: 'song 145100 1' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/song_2026-05-05_004.mp3', title: 'song 2026 05 05 004' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/song_2026-05-05_003.mp3', title: 'song 2026 05 05 003' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/song_2026-05-05_002.mp3', title: 'song 2026 05 05 002' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/song_2026-05-05_001.mp3', title: 'song 2026 05 05 001' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/song_2026-04-27_002.mp3', title: 'song 2026 04 27 002' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/song_2026-04-27_001.mp3', title: 'song 2026 04 27 001' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/song_152425_2.mp3', title: 'song 152425 2' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/song_152242_1.mp3', title: 'song 152242 1' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/song_145310_2.mp3', title: 'song 145310 2' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/song_144901_1.mp3', title: 'song 144901 1' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/music_2026-04-27-06-34-30.mp3', title: 'music 2026 04 27 06 34 30' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/music/music_2026-04-27-06-14-33.mp3', title: 'music 2026 04 27 06 14 33' }
     ];
         
         // 图片数据
         const imageFiles = [
-        { file: 'image/微信图片_20260428090130_16708_7.jpg', title: '微信图片 20260428090130 16708 7' },
-        { file: 'image/image_001.jpg', title: 'image 001' },
-        { file: 'image/img_2026-04-28_002.jpg', title: 'img 2026 04 28 002' },
-        { file: 'image/img_2026-04-28_001.jpg', title: 'img 2026 04 28 001' }
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/image/img_2026-04-28_002.jpg', title: 'img 2026 04 28 002' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/image/img_2026-04-28_001.jpg', title: 'img 2026 04 28 001' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/image/image_001.jpg', title: 'image 001' },
+        { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/image/微信图片_20260428090130_16708_7.jpg', title: '微信图片 20260428090130 16708 7' }
     ];
         
         // 显示日期
@@ -360,12 +361,12 @@
         imageFiles.forEach(img => {
             const item = document.createElement('div');
             item.className = 'gallery-item';
-            item.innerHTML = `
-                <img src="${img.file}" alt="${img.title}" loading="lazy">
+            item.innerHTML = \`
+                <img src="\${img.file}" alt="\${img.title}" loading="lazy">
                 <div class="info">
-                    <div class="filename">${img.title}</div>
+                    <div class="filename">\${img.title}</div>
                 </div>
-            `;
+            \`;
             item.addEventListener('click', () => openLightbox(img.file));
             gallery.appendChild(item);
         });
@@ -478,16 +479,16 @@
         musicFiles.forEach(music => {
             const item = document.createElement('div');
             item.className = 'music-item';
-            item.innerHTML = `
+            item.innerHTML = \`
                 <button class="play-btn">
                     <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 </button>
                 <div class="music-info">
-                    <div class="music-title">${music.title}</div>
+                    <div class="music-title">\${music.title}</div>
                     <div class="time">点击播放</div>
                     <div class="progress-bar"><div class="progress"></div></div>
                 </div>
-            `;
+            \`;
             
             const playBtn = item.querySelector('.play-btn');
             playBtn.addEventListener('click', () => {
@@ -501,3 +502,10 @@
     </script>
 </body>
 </html>
+`, {
+        headers: { 'Content-Type': 'text/html' }
+      });
+    }
+    return new Response('Not Found', { status: 404 });
+  }
+};
