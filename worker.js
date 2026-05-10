@@ -286,6 +286,32 @@ export default {
             padding: 60px 20px;
             color: #666;
         }
+
+        /* AI 新闻版块 */
+        .news-list { display: flex; flex-direction: column; gap: 12px; }
+        .news-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px; padding: 16px 20px;
+            transition: background 0.3s ease, border-color 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        .news-item:hover { background: rgba(255,255,255,0.09); border-left-color: #00ff88; }
+        .news-item-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+        .news-category { font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; font-weight: 600; white-space: nowrap; }
+        .cat-models   { background: rgba(0,217,255,0.15);  color: #00d9ff; }
+        .cat-products { background: rgba(0,255,136,0.15);  color: #00ff88; }
+        .cat-industry { background: rgba(255,200,0,0.15);  color: #ffc800; }
+        .cat-paper    { background: rgba(180,100,255,0.15); color: #c864ff; }
+        .cat-tip      { background: rgba(255,120,180,0.15); color: #ff78b4; }
+        .news-source  { font-size: 0.75rem; color: #666; }
+        .news-title   { font-size: 0.95rem; color: #e0e0e0; margin-bottom: 6px; line-height: 1.5; }
+        .news-title a { color: inherit; text-decoration: none; }
+        .news-title a:hover { color: #00d9ff; }
+        .news-summary { font-size: 0.8rem; color: #888; line-height: 1.6; margin-bottom: 6px; }
+        .news-meta    { font-size: 0.72rem; color: #555; }
+        .news-loading { text-align: center; padding: 40px; color: #666; }
+        .news-error   { text-align: center; padding: 30px; color: #ff6b6b; background: rgba(255,107,107,0.1); border-radius: 12px; }
+
     </style>
 </head>
 <body>
@@ -345,6 +371,7 @@ export default {
         
         // 图片数据
         const imageFiles = [
+                { file: 'https://raw.githubusercontent.com/Asali2021/daily-art-share/main/image/daily-art_2026-05-10.jpg', title: '\u5a5a\u60f3\98ce\u666f \u00b7 2026-05-10' },
         { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/image/img_2026-04-28_002.jpg', title: 'img 2026 04 28 002' },
         { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/image/img_2026-04-28_001.jpg', title: 'img 2026 04 28 001' },
         { file: 'https://pub-69f8b184e6e1482490f015aaa5ee5dd4.r2.dev/image/image_001.jpg', title: 'image 001' },
@@ -498,6 +525,60 @@ export default {
             });
             
             musicList.appendChild(item);
+
+        // ── AI 新闻（aihot.virxact.com）──────────
+        var CAT_LABELS = {
+            'ai-models':   { label: '\u6a21\u578b\u53d1\u5e03', cls: 'cat-models'   },
+            'ai-products': { label: '\u4ea7\u54c1\u53d1\u5e03', cls: 'cat-products' },
+            'industry':    { label: '\u884c\u4e1a\u52a8\u6001', cls: 'cat-industry' },
+            'paper':      { label: '\u8bba\u6587\u7814\u7a76', cls: 'cat-paper'    },
+            'tip':        { label: '\u6280\u5de7\u89c2\u70b9', cls: 'cat-tip'      },
+        };
+        function relTime(iso) {
+            if (!iso) return '';
+            var diff = Date.now() - new Date(iso).getTime();
+            var h = Math.floor(diff/3600000);
+            if (h < 1)  return '\u521a\u521a';
+            if (h < 24) return h+'\u5c0f\u65f6\u524d';
+            var d = Math.floor(h/24);
+            return d+'\u5929\u524d';
+        }
+        function renderNews(items) {
+            var el = document.getElementById('newsList');
+            if (!items || !items.length) {
+                el.innerHTML = '<div class="news-error">\u4eca\u65e5\u6682\u65e0\u8d44\u8baf</div>'; return;
+            }
+            var html = '';
+            for (var i = 0; i < Math.min(items.length, 8); i++) {
+                var item = items[i];
+                var cat = CAT_LABELS[item.category] || {label:'', cls:'cat-tip'};
+                var sum = item.summary ? '<div class="news-summary">'+item.summary.slice(0,100)+(item.summary.length>100?'\u2026':'')+'</div>' : '';
+                var src = item.source ? '<span class="news-source">'+item.source+'</span>' : '';
+                var meta = relTime(item.publishedAt);
+                var itemUrl = item.url || '#';
+                var itemTitle = item.title || '';
+                html += '<div class="news-item">' +
+                    '<div class="news-item-header">' +
+                        '<span class="news-category '+cat.cls+'">'+cat.label+'</span>' +
+                        src + (meta ? '<span class="news-source">'+meta+'</span>' : '') +
+                    '</div>' +
+                    '<div class="news-title"><a href="'+itemUrl+'" target="_blank" rel="noopener">'+itemTitle+'</a></div>' +
+                    sum +
+                '</div>';
+            }
+            el.innerHTML = html;
+        }
+        (function loadNews() {
+            var el = document.getElementById('newsList');
+            var UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+            var sinceMs = Date.now() - 86400000;
+            var since = new Date(sinceMs).toISOString().replace(/\.000Z$/, '.000Z');
+            fetch('https://aihot.virxact.com/api/public/items?mode=selected&since='+since+'&take=8', {headers:{'User-Agent':UA}})
+                .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+                .then(function(d){ renderNews(d.items||[]); })
+                .catch(function(){ el.innerHTML='<div class="news-error">\u8d44\u8baf\u52a0\u8f7d\u5931\u8d25\uff0c\u8bf7\u5237\u65b0\u91cd\u8bd5</div>'; });
+        })();
+
         });
     </script>
 </body>
